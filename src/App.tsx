@@ -1,28 +1,11 @@
-import React, { useEffect, useState } from 'react'
+import React from 'react'
 import './App.css'
-
-interface MyObject {
-  id: number
-}
+import { MyObject, useCustomEvent } from './hooks/useCustomEvent'
 
 function App () {
-  const [id, setId] = useState(0)
-
-  useEffect(() => {
-    const handleEvent = ((event: CustomEvent<MyObject>) => {
-      console.log(event)
-      setId(event.detail.id)
-    }) as EventListenerOrEventListenerObject
-
-    document.addEventListener('custom-event', handleEvent)
-
-    return () => {
-      document.removeEventListener('custom-event', handleEvent)
-    }
-  })
+  const { id } = useCustomEvent()
 
   const onClick = () => {
-    console.log('onClick')
     const obj: MyObject = { id: id + 1 }
     document.dispatchEvent(new CustomEvent('custom-event', { detail: obj }))
   }
